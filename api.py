@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import config
 
 def get_token():
   url = "https://openapi.italent.link/token"
@@ -34,7 +35,7 @@ def get_tag(token):
 
 def get_tag_id(token):
     tag_id = None
-    tag_name = "auto_addtag"
+    tag_name = config.TAG_NAME
     all_tag = get_tag(token)
     tag_list = all_tag.get("data")
     for tag in tag_list:
@@ -55,13 +56,13 @@ def disable_tag(token,tag_id):
                         f"{tag_id}"
                     ]
             })
-            response = requests.request("post", url, headers=header, data=body,timeout=3)
+            response = requests.request("post", url, headers=header, data=body,timeout=config.TIMEOUT)
             if response.status_code == 200:
                 return response
         except requests.exceptions.Timeout:
-            if i ==2:
+            if i ==config.RETRY_DELAY:
                 raise
-            time.sleep(2)
+            time.sleep(config.RETRY_TIMES)
 
 def enable_tag(token,tag_id):
     url='https://openapi.italent.link/DataCenterApi/api/v1/TalentTag/EnableTags'
@@ -86,7 +87,7 @@ def add_usertag(token,tag_id):
         "employeeTags":
             [
                 {
-                    "userID": "662519962",
+                    "userID": f"{config.USER_ID}",
                     "tagCode": f"{tag_id}"
                 }
             ]
@@ -104,7 +105,7 @@ def delete_usertag(token,tag_id):
         "employeeTags":
             [
                 {
-                    "userID": "662519962",
+                    "userID": f"{config.USER_ID}",
                     "tagCode": f"{tag_id}"
                 }
             ]

@@ -1,0 +1,5 @@
+TAG_NAME = "auto_addtag"
+USER_ID = "662519962"
+TIMEOUT = 3
+RETRY_TIMES = 3
+RETRY_DELAY = 2
