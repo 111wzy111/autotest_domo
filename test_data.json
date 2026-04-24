@@ -1,0 +1,4 @@
+{
+    "valid_tags": [ "ext_tag_001221", "ext_tag_000542" ],
+    "invalid_tags": [ "", " ", "not_exist", "123456" ]
+}

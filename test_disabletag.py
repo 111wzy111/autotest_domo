@@ -3,20 +3,17 @@ import json
 import pytest
 import api
 #$env:REQUESTS_CA_BUNDLE = "E:\auto test\beisen\证书\证书.pem"
-@pytest.fixture(scope="session")
-def token():
-    print("\n===== 正在获取 token =====")
-    return api.get_token()
-@pytest.fixture(scope="session")
-def tag_id(token):
-    return api.get_tag_id(token)
+import os
+currect_dir=os.path.dirname(__file__)
+file_path=os.path.join(currect_dir,'test_data.json')
+with open(file_path,'r',encoding='utf-8') as f:
+    testtagid = json.load(f)  #json文件中的正向异向tag字典
+
 
 class TestTagDisable:
     # def setup_method(self):
     #     """每个测试方法前执行，获取一次 token"""
     #     self.token = get_token()
-
-
     def test_disable_existing_tag(self,token,tag_id):
 
 
@@ -32,13 +29,9 @@ class TestTagDisable:
         resp=api.enable_tag(token,tag_id)
         assert resp.status_code==200
 
-    @pytest.mark.parametrize("invalid_tag_id",[
-        "existent_id_123",
-        "existent123",
-        "",
-        " "
-    ])
-    def test_nonexistent_tag(self,token,invalid_tag_id):
+    @pytest.mark.parametrize("invalid_tag_id",testtagid["invalid_tags"])
+
+    def test_nonexistent_tag(self,token,invalid_tag_id,test_data):
         resp = api.disable_tag(token, invalid_tag_id)
         assert resp.status_code == 200   # 假设HTTP层面仍然成功
         json_data = resp.json()
@@ -52,6 +45,7 @@ class TestTagDisable:
             assert "标签编码不能为空" ==fail_message
         else:
             assert "标签不存在" == fail_message
+        print(test_data)
 
 
     def test_delete_userstag(self,token,tag_id):
