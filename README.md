@@ -5,3 +5,4 @@
 - 测试数据与代码分离，异常场景通过 JSON 文件 + @pytest.mark.parametrize 实现数据驱动，每条异常数据独立成用例。
 
 运行测试：`pytest test_disabletag.py -v
+![Allure测试报告](allure_report.png)
