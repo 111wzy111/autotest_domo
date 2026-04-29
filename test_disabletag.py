@@ -14,6 +14,7 @@ class TestTagDisable:
     # def setup_method(self):
     #     """每个测试方法前执行，获取一次 token"""
     #     self.token = get_token()
+    @pytest.mark.smoke
     def test_disable_existing_tag(self,token,tag_id):
 
 
@@ -23,7 +24,7 @@ class TestTagDisable:
         assert json_data.get("code") == "200"
         assert "操作成功" in json_data.get("message", "")
     #
-
+    @pytest.mark.smoke
     def test_enable_existing_tag(self,token,tag_id):
 
         resp=api.enable_tag(token,tag_id)
@@ -47,13 +48,14 @@ class TestTagDisable:
             assert "标签不存在" == fail_message
         print(test_data)
 
-
+    @pytest.mark.smoke
     def test_delete_userstag(self,token,tag_id):
         resp=api.delete_usertag(token,tag_id)
         assert resp.status_code== 200
         json_data=resp.json()
         assert json_data.get("message")=="执行成功"
 
+    @pytest.mark.smoke
     def test_add_userstag(self, token, tag_id):
         resp = api.add_usertag(token, tag_id)
         assert resp.status_code == 200

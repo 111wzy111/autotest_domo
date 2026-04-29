@@ -3,7 +3,8 @@ import json
 import pytest
 import api
 import os
-
+def pytest_configure(config):
+    config.addinivalue_line("markers", "smoke: 冒烟测试用例")
 
 @pytest.fixture(scope="session")
 def token():
